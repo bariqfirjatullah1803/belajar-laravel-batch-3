@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,14 @@ Route::prefix('/admin')->name('admin.')->controller(AdminController::class)->gro
     Route::get('/chart', 'chart')->name('chart');
 });
 
+// Student Route
+Route::prefix('/student')->name('student.')->controller(StudentController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('/create/{student?}', 'create')->name('create');
+    Route::post('/', 'store')->name('store');
+    Route::get('/{student}/edit', 'edit')->name('edit');
+    Route::put('/{student}/update', 'update')->name('update');
+    Route::delete('/{student}/destroy', 'destroy')->name('destroy');
+});
+
+// Route::resource('student', StudentController::class)->except(['show']);
