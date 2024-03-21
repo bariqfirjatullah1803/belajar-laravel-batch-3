@@ -15,6 +15,13 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Tables
             </a>
+            {{-- @dd(auth()->user()->roles->pluck('name')[0]) --}}
+            @if (auth()->user()->roles->pluck('name')[0] == 'admin')
+                <a class="nav-link" href="{{ route('student.index') }}">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                    Student
+                </a>
+            @endif
         </div>
     </div>
     <div class="sb-sidenav-footer">

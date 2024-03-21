@@ -19,7 +19,7 @@
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control @error('name')is-invalid @enderror" id="name"
-                            name="name" aria-describedby="validationNameFeedback" value="{{ $student?->name }}">
+                            name="name" aria-describedby="validationNameFeedback" value="">
                         @error('name')
                             <div id="validationNameFeedback" class="invalid-feedback">
                                 {{ $message }}
@@ -29,8 +29,21 @@
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
                         <textarea class="form-control @error('address')is-invalid @enderror" id="address" name="address"
-                            aria-describedby="validationAddressFeedback">{{ $student?->address }}</textarea>
+                            aria-describedby="validationAddressFeedback"></textarea>
                         @error('address')
+                            <div id="validationAddressFeedback" class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="class" class="form-label">Class</label>
+                        <select class="form-select" id="class" name="class">
+                            @foreach ($classes as $class)
+                                <option value="{{ $class->id }}">{{ $class->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('class')
                             <div id="validationAddressFeedback" class="invalid-feedback">
                                 {{ $message }}
                             </div>

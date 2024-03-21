@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Models\StudentClass;
 
 class StudentController extends Controller
 {
@@ -12,7 +13,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::orderBy("updated_at","desc")->get();
+        $students = Student::with('studentClass')->orderBy("updated_at", "desc")->get();
 
         return view('admin.student.index', compact('students'));
     }
@@ -20,13 +21,16 @@ class StudentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request, $id = null)
+    public function create(Request $request/*, $id = null*/)
     {
-        $student = null;
-        if($id != null){
-            $student = Student::find($id);
-        }
-        return view('admin.student.create', compact('student'));
+        // $student = null;
+        // if ($id != null) {
+        //     $student = Student::find($id);
+        // }
+        // return view('admin.student.create', compact('student'));
+
+        $classes = StudentClass::all();
+        return view('admin.student.create', compact('classes'));
     }
 
     /**
@@ -36,12 +40,14 @@ class StudentController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'address' => 'required'
+            'address' => 'required',
+            'class' => 'required',
         ]);
 
         Student::create([
-            'name'=> $request->name,
-            'address' => $request->address
+            'name' => $request->name,
+            'address' => $request->address,
+            'class_id' => $request->class
         ]);
 
         return redirect()->route('student.index');
@@ -74,7 +80,7 @@ class StudentController extends Controller
         ]);
 
         $student->update([
-            'name'=> $request->name,
+            'name' => $request->name,
             'address' => $request->address
         ]);
 

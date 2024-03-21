@@ -22,20 +22,18 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
 // Admin Route
 // include ('admin-route.php');
-Route::prefix('/admin')->name('admin.')->controller(AdminController::class)->group(function () {
+Route::prefix('/admin')->middleware('auth')->name('admin.')->controller(AdminController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/table', 'table')->name('table');
     Route::get('/chart', 'chart')->name('chart');
 });
-
 // Student Route
-Route::prefix('/student')->name('student.')->controller(StudentController::class)->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::get('/create/{student?}', 'create')->name('create');
-    Route::post('/', 'store')->name('store');
-    Route::get('/{student}/edit', 'edit')->name('edit');
-    Route::put('/{student}/update', 'update')->name('update');
-    Route::delete('/{student}/destroy', 'destroy')->name('destroy');
-});
+Route::resource('student', StudentController::class)->except(['show'])->middleware(['auth','role:admin']);
 
-// Route::resource('student', StudentController::class)->except(['show']);
+/*
+ * From Laravel/UI
+ */
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/welcome', [PageController::class, 'welcome'])->name('welcome');
