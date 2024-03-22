@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentClassController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,8 @@ use App\Http\Controllers\StudentController;
 |
 */
 
-Route::get('/', [PageController::class, 'index'])->name('index');
+Route::get('/', [RegisterController::class, 'showRegistrationForm'])->name('index');
+
 Route::get('/aboutus', [PageController::class, 'about'])->name('about');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
@@ -27,8 +30,12 @@ Route::prefix('/admin')->middleware('auth')->name('admin.')->controller(AdminCon
     Route::get('/table', 'table')->name('table');
     Route::get('/chart', 'chart')->name('chart');
 });
+
 // Student Route
-Route::resource('student', StudentController::class)->except(['show'])->middleware(['auth','role:admin']);
+Route::resource('student', StudentController::class)->except(['show'])->middleware(['auth', 'role:admin']);
+
+// Class Route
+Route::get('class', [StudentClassController::class, 'index']);
 
 /*
  * From Laravel/UI
